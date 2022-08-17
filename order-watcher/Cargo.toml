@@ -54,7 +54,7 @@ tokio-stream = { version = "0.1", features = [ "sync" ] }
 tracing = "0.1"
 # tracing-subscriber = { git = "https://github.com/tokio-rs/tracing", rev = "b30131d44b2cd80bfe1a9bd8f8d8b929965f9024", features = [ "env-filter" ] }
 tracing-subscriber = "0.2"
-tracing-test = "0.1"
+tracing-test = "0.2"
 types = { path = "../types" }
 url = "2.2"
 web3 = { version = "0.17", default-features = false, features = [ "ws-tls-tokio", "ws-tokio", "signing" ] }
