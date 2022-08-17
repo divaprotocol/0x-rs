@@ -35,7 +35,7 @@ web3 = { version = "0.17", default-features = false, features = [ "ws-tls-tokio"
 
 [dev-dependencies]
 criterion = { version = "0.3", features = [ "async_tokio" ] }
-pretty_assertions = "0.7"
+pretty_assertions = "1.2"
 proptest = { version = "1.0" }
 
 [build-dependencies]
