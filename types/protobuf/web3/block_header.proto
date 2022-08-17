@@ -1,0 +1,28 @@
+syntax = "proto3";
+package web3;
+
+import "web3/h64.proto";
+import "web3/h256.proto";
+import "web3/u256.proto";
+import "web3/h2048.proto";
+import "web3/address.proto";
+
+message BlockHeader {
+  H256 hash = 1;
+  H256 parent_hash = 2;
+  H256 uncles_hash = 3;
+  Address author = 4;
+  H256 state_root = 5;
+  H256 transactions_root = 6;
+  H256 receipts_root = 7;
+  optional uint64 number = 8;
+  U256 gas_used = 9;
+  U256 gas_limit = 10;
+  U256 base_fee_per_gas = 11;
+  bytes extra_data = 12;
+  H2048 logs_bloom = 13;
+  U256 timestamp = 14;
+  U256 difficulty = 15;
+  H256 mix_hash = 16;
+  H64 nonce = 17;
+}

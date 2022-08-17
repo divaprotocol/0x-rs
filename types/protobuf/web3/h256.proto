@@ -1,0 +1,6 @@
+syntax = "proto3";
+package web3;
+
+message H256 {
+  bytes bytes = 1;
+}

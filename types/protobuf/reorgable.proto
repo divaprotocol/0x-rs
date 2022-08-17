@@ -1,0 +1,18 @@
+syntax = "proto3";
+package zeroex.reorgable;
+
+// A reorgable event stream
+message Event {
+  // Block height of the block this event derives from
+  // Should be monotonically increasing, except in the event of reorgs. On re-org
+  // all previous events with `block_height` ≤ this value are invalidated.
+  uint64 block_height = 1;
+
+  oneof event {
+    Reorg reorg = 2;
+
+    // ... [Application specific event types]
+  }
+}
+
+message Reorg { }

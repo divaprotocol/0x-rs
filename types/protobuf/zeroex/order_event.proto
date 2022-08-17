@@ -1,0 +1,12 @@
+syntax = "proto3";
+package zeroex;
+
+import "zeroex/limit_order.proto";
+import "zeroex/metadata.proto";
+import "zeroex/signature.proto";
+
+message OrderEvent {
+  LimitOrder limit_order = 1;
+  Signature signature = 2;
+  Metadata metadata = 3;
+}

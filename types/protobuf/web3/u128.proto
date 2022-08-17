@@ -1,0 +1,9 @@
+// Little-endian large integer type 128-bit unsigned integer.
+
+syntax = "proto3";
+package web3;
+
+message U128 {
+  fixed64 limb_0 = 1;
+  fixed64 limb_1 = 2;
+}

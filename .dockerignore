@@ -1,0 +1,19 @@
+# Exclude root
+*
+!Readme.md
+!Cargo.toml
+!Cargo.lock
+
+# Include order-watcher except migrations and test
+!order-watcher
+order-watcher/migrations
+order-watcher/test-data
+
+# Include block-watcher
+!block-watcher
+
+# Include types
+!types
+
+# Exclude any Dockerfiles (including will invalidate caches when working on them)
+**/Dockerfile

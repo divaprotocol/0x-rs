@@ -1,0 +1,9 @@
+syntax = "proto3";
+package web3;
+
+message U256 {
+  fixed64 limb_0 = 1;
+  fixed64 limb_1 = 2;
+  fixed64 limb_2 = 3;
+  fixed64 limb_3 = 4;
+}

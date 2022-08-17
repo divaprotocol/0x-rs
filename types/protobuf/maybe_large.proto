@@ -1,0 +1,19 @@
+syntax = "proto3";
+package zeroex.maybe_large;
+
+// A message of unbounded size, potentially stored in object store.
+message MaybeLarge {
+  oneof maybe_large {
+    Large large = 1;
+
+    // > Embedded messages are compatible with bytes if the bytes contain an
+    // > encoded version of the message.
+    // See <https://developers.google.com/protocol-buffers/docs/proto3>
+    bytes embedded = 2;
+  }
+}
+
+message Large {
+  // Path relative to the base URI containing the object
+  string payload_path = 1;
+}

@@ -1,0 +1,69 @@
+[package]
+name = "order-watcher"
+version = "0.1.0"
+publish = false
+authors = ["Mason Liang <mason@0x.org>", "Remco Bloemen <remco@0x.org>"]
+edition = "2018"
+description = "Watch 0x orders on Ethereum"
+repository = "https://github.com/0xProject/0x-rs"
+readme = "Readme.md"
+license-file = "mit-license.md"
+build = "build.rs"
+
+[features]
+default = []
+bench = [ "criterion", "proptest" ]
+
+[lib]
+name = "lib"
+
+[[bench]]
+name = "criterion"
+harness = false
+path = "criterion.rs"
+required-features = [ "bench", "proptest" ]
+
+[dependencies]
+anyhow = "1.0"
+block-watcher = { path = "../block-watcher" }
+chrono = { version = "0.4", features = [ "serde" ] }
+criterion = { version = "0.3", features = [ "async_tokio" ], optional = true }
+diesel = { version = "1.4", features = [ "postgres", "chrono" ] }
+ethabi = "14.0"
+futures = "0.3"
+hex = "0.4"
+hex-literal = "0.3"
+hyper = { version = "0.14", features = [ "full" ] }
+lazy_static = "1.4.0"
+mimalloc = { version = "0.1", default-features = false, optional = true }
+once_cell = "1.8"
+prometheus = { version = "0.12", features = [ "process" ] }
+proptest = { version = "1.0", optional = true }
+prost-types = "0.8"
+secp256k1 = "0.20"
+serde = { version = "1.0", features = [ "derive" ] }
+serde_json = "1.0"
+sha3 = "0.9.1"
+smallvec = "1.6"
+structopt = "0.3"
+strum = "0.21"
+strum_macros = "0.21"
+thiserror = "1.0"
+tokio = { version = "1.10", features = [ "full" ] }
+tokio-stream = { version = "0.1", features = [ "sync" ] }
+tracing = "0.1"
+# tracing-subscriber = { git = "https://github.com/tokio-rs/tracing", rev = "b30131d44b2cd80bfe1a9bd8f8d8b929965f9024", features = [ "env-filter" ] }
+tracing-subscriber = "0.2"
+tracing-test = "0.1"
+types = { path = "../types" }
+url = "2.2"
+web3 = { version = "0.17", default-features = false, features = [ "ws-tls-tokio", "ws-tokio", "signing" ] }
+
+[dev-dependencies]
+criterion = { version = "0.3", features = [ "async_tokio" ] }
+pretty_assertions = "0.7"
+proptest = { version = "1.0" }
+
+[build-dependencies]
+anyhow = "1.0"
+chrono = "0.4"

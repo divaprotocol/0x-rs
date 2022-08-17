@@ -1,0 +1,60 @@
+# See <http://plugins.drone.io/drone-plugins/drone-ecr/>
+name: 0x-order-watcher-pipeline
+kind: pipeline
+type: kubernetes
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+  - name: publish
+    image: plugins/ecr
+    settings:
+      region: us-east-1
+      registry: 883408475785.dkr.ecr.us-east-1.amazonaws.com
+      repo: 0x/order-watcher
+      dockerfile: order-watcher/Dockerfile
+      tags:
+        - ${DRONE_COMMIT_SHA}
+        - latest
+
+trigger:
+  branch:
+  - main
+  event:
+    include:
+      - push
+
+node_selector:
+  drone-builds: true
+---
+name: 0x-block-watcher-pipeline
+kind: pipeline
+type: kubernetes
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+  - name: publish
+    image: plugins/ecr
+    settings:
+      region: us-east-1
+      registry: 883408475785.dkr.ecr.us-east-1.amazonaws.com
+      repo: 0x/block-watcher
+      dockerfile: block-watcher/Dockerfile
+      tags:
+        - ${DRONE_COMMIT_SHA}
+        - latest
+
+trigger:
+  branch:
+  - main
+  event:
+    include:
+      - push
+
+node_selector:
+  drone-builds: true

@@ -1,0 +1,24 @@
+syntax = "proto3";
+package zeroex;
+
+import "web3/address.proto";
+import "web3/h256.proto";
+import "web3/u128.proto";
+import "web3/u256.proto";
+
+message LimitOrder {
+  web3.Address maker = 1;
+  web3.Address taker = 2;
+  web3.Address maker_token = 3;
+  web3.Address taker_token = 4;
+  web3.U128 maker_amount = 5;
+  web3.U128 taker_amount = 6;
+  uint64 expiry = 7;
+  web3.U256 salt = 8;
+  web3.Address fee_recipient = 9;
+  web3.H256 pool = 10;
+  web3.U128 taker_token_fee_amount = 11;
+  web3.Address sender = 12;
+  web3.Address verifying_contract = 13;
+  uint64 chain_id = 14;
+}

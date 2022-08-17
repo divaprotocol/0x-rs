@@ -1,0 +1,21 @@
+syntax = "proto3";
+package zeroex;
+
+import "web3/h256.proto";
+import "web3/u128.proto";
+import "google/protobuf/timestamp.proto";
+
+message Metadata {
+  web3.H256 hash = 1;
+  web3.U128 remaining = 2;
+  enum OrderStatus {
+    Added = 0;
+    Invalid = 1;
+    Fillable = 2;
+    FullyFilled = 3;
+    Cancelled = 4;
+    Expired = 5;
+  }
+  OrderStatus order_status = 3;
+  google.protobuf.Timestamp created_at = 4;
+}

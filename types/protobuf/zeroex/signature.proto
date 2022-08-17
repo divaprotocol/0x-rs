@@ -1,0 +1,15 @@
+syntax = "proto3";
+package zeroex;
+
+import "web3/h256.proto";
+
+message Signature {
+  enum Type {
+    Eip712 = 0;
+    EthSign = 1;
+  }
+  Type type = 1;
+  uint32 v = 2;
+  web3.H256 r = 3;
+  web3.H256 s = 4;
+}
