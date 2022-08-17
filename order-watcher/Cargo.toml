@@ -29,7 +29,7 @@ block-watcher = { path = "../block-watcher" }
 chrono = { version = "0.4", features = [ "serde" ] }
 criterion = { version = "0.3", features = [ "async_tokio" ], optional = true }
 diesel = { version = "1.4", features = [ "postgres", "chrono" ] }
-ethabi = "14.0"
+ethabi = "16.0"
 futures = "0.3"
 hex = "0.4"
 hex-literal = "0.3"
