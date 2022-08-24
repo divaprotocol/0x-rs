@@ -28,7 +28,7 @@ pub struct Options {
         short,
         long,
         env = "ETHEREUM",
-        default_value = "https://eth-ropsten.alchemyapi.io/v2/3WuVrKsjfC6dk-8SQybWvN51ta6MKvO4"
+        default_value = "https://goerli.infura.io/v3/238bdc81208d4476bd300eb2fdfc9da5"
     )]
     pub ethereum: Url,
 
