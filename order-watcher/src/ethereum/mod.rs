@@ -10,6 +10,7 @@ use structopt::StructOpt;
 use tracing::info;
 use url::Url;
 use web3::{contract::Contract, transports::Http, types::Address, Web3};
+use web3::types::{U256};
 
 use self::{
     abi_coding::{Input, Output},
@@ -78,7 +79,7 @@ impl Ethereum {
 
         // Verify chain id
         let chain_id = web3.eth().chain_id().await?;
-        let chain = ChainInfo {
+        let mut chain = ChainInfo {
             chain_id,
             exchange: options.exchange,
             flash_wallet: options.flash_wallet,
@@ -86,6 +87,16 @@ impl Ethereum {
             request_timeout: REQUEST_TIMEOUT,
             max_reorg: options.max_reorg,
         };
+
+        if U256::from(5) == chain.chain_id {
+            chain.exchange = "0xf91bb752490473b8342a3e964e855b9f9a2a668e"
+                .parse()
+                .unwrap();
+            chain.flash_wallet = "0xf15469c80a1965f5f90be5651fcb6c6f3392b2a1"
+                .parse()
+                .unwrap();
+        }
+
         info!("Connected to Ethereum with chain id {}", chain.chain_id);
 
         // Wrap contracts
