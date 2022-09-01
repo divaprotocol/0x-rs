@@ -59,7 +59,7 @@ struct Options {
         short,
         long,
         env = "ETHEREUM",
-        default_value = "wss://eth-mainnet.ws.alchemyapi.io/v2/Tv2L-c59Mti0z9k0gnKBufinC6Ac86M-"
+        default_value = "wss://goerli.infura.io/ws/v3/238bdc81208d4476bd300eb2fdfc9da5"
     )]
     pub ethereum:   Url,
 }
