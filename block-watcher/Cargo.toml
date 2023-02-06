@@ -28,7 +28,7 @@ tokio = { version = "1.10", features = [ "full" ] }
 tokio-stream = { version = "0.1", features = [ "sync" ] }
 tracing = "0.1"
 tracing-subscriber = "0.2"
-tracing-test = "0.1"
+tracing-test = "0.2"
 types = { path = "../types" }
 url = "2.2"
 web3 = { version = "0.17", default-features = false, features = [ "ws-tls-tokio", "ws-tokio", "signing" ] }
