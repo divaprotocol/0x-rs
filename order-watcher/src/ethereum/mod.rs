@@ -77,13 +77,15 @@ impl Ethereum {
     #[allow(clippy::similar_names)] // Watcher and Batcher are similar
     pub async fn connect(options: Options) -> AnyResult<Self> {
         dotenv().ok();
-        let mut rpc_url = options.ethereum;
         // Verify chain id
         let chain_id = env::var("CHAIN_ID").unwrap();
 
-        let goerli_rpc_url = env::var("GOERLI_RPC_URL").unwrap();
-        let polygon_rpc_url = env::var("POLYGON_RPC_URL").unwrap();
-        let mumbai_rpc_url = env::var("MUMBAI_RPC_URL").unwrap();
+        let mainnet_rpc_url = env::var("HTTPS_MAINNET_RPC_URL").unwrap();
+        let goerli_rpc_url = env::var("HTTPS_GOERLI_RPC_URL").unwrap();
+        let polygon_rpc_url = env::var("HTTPS_POLYGON_RPC_URL").unwrap();
+        let mumbai_rpc_url = env::var("HTTPS_MUMBAI_RPC_URL").unwrap();
+
+        let mut rpc_url = options.ethereum;
 
         if chain_id == "5" {
             rpc_url = goerli_rpc_url.parse().unwrap();
@@ -91,6 +93,8 @@ impl Ethereum {
             rpc_url = polygon_rpc_url.parse().unwrap();
         } else if chain_id == "80001" {
             rpc_url = mumbai_rpc_url.parse().unwrap();
+        } else {
+            rpc_url = mainnet_rpc_url.parse().unwrap();
         }
 
         info!("Connecting to Ethereum at {}", rpc_url);

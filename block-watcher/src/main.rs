@@ -79,9 +79,10 @@ fn main() -> AnyResult<()> {
     options.log.init()?;
 
     let chain_id = env::var("CHAIN_ID").unwrap();
-    let goerli_rpc_url = env::var("GOERLI_RPC_URL").unwrap();
-    let polygon_rpc_url = env::var("POLYGON_RPC_URL").unwrap();
-    let mumbai_rpc_url = env::var("MUMBAI_RPC_URL").unwrap();
+    let mainnet_rpc_url = env::var("WSS_MAINNET_RPC_URL").unwrap();
+    let goerli_rpc_url = env::var("WSS_GOERLI_RPC_URL").unwrap();
+    let polygon_rpc_url = env::var("WSS_POLYGON_RPC_URL").unwrap();
+    let mumbai_rpc_url = env::var("WSS_MUMBAI_RPC_URL").unwrap();
 
     if chain_id == "5" {
         options.ethereum = goerli_rpc_url.parse().unwrap();
@@ -89,6 +90,8 @@ fn main() -> AnyResult<()> {
         options.ethereum = polygon_rpc_url.parse().unwrap();
     } else if chain_id == "80001" {
         options.ethereum = mumbai_rpc_url.parse().unwrap();
+    } else {
+        options.ethereum = mainnet_rpc_url.parse().unwrap();
     }
 
     // Launch Tokio runtime
