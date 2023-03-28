@@ -11,6 +11,8 @@ use structopt::StructOpt;
 use tokio::{runtime, spawn, sync::oneshot};
 use tracing::info;
 use url::Url;
+use dotenv::dotenv;
+use std::env;
 
 use self::{allocator::Allocator, logging::LogOptions};
 
@@ -59,21 +61,35 @@ struct Options {
         short,
         long,
         env = "ETHEREUM",
-        default_value = "wss://goerli.infura.io/ws/v3/238bdc81208d4476bd300eb2fdfc9da5"
+        default_value = "wss://mainnet.infura.io/ws/v3/"
     )]
     pub ethereum:   Url,
 }
 
 fn main() -> AnyResult<()> {
+    dotenv().ok();
     // Parse CLI and handle help and version (which will stop the application).
     let matches = Options::clap().long_version(VERSION).get_matches();
-    let options = Options::from_clap(&matches);
+    let mut options = Options::from_clap(&matches);
 
     // Meter memory consumption
     ALLOCATOR.start_metering();
 
     // Start log system
     options.log.init()?;
+
+    let chain_id = env::var("CHAIN_ID").unwrap();
+    let goerli_rpc_url = env::var("GOERLI_RPC_URL").unwrap();
+    let polygon_rpc_url = env::var("POLYGON_RPC_URL").unwrap();
+    let mumbai_rpc_url = env::var("MUMBAI_RPC_URL").unwrap();
+
+    if chain_id == "5" {
+        options.ethereum = goerli_rpc_url.parse().unwrap();
+    } else if chain_id == "137" {
+        options.ethereum = polygon_rpc_url.parse().unwrap();
+    } else if chain_id == "80001" {
+        options.ethereum = mumbai_rpc_url.parse().unwrap();
+    }
 
     // Launch Tokio runtime
     runtime::Builder::new_multi_thread()
