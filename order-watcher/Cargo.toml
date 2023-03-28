@@ -29,11 +29,13 @@ block-watcher = { path = "../block-watcher" }
 chrono = { version = "0.4", features = [ "serde" ] }
 criterion = { version = "0.3", features = [ "async_tokio" ], optional = true }
 diesel = { version = "1.4", features = [ "postgres", "chrono" ] }
+dotenv = "0.15.0"
 ethabi = "14.0"
 futures = "0.3"
 hex = "0.4"
 hex-literal = "0.3"
 hyper = { version = "0.14", features = [ "full" ] }
+konst = "0.3.4"
 lazy_static = "1.4.0"
 mimalloc = { version = "0.1", default-features = false, optional = true }
 once_cell = "1.8"
