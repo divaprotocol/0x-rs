@@ -59,7 +59,7 @@ pub struct Options {
         short,
         long,
         env = "DATABASE",
-        default_value = "postgres://api:api@localhost:5432/api"
+        default_value = "postgres://postgres:postgres@localhost/diva-api"
     )]
     pub database: Url,
 }
@@ -317,7 +317,7 @@ pub mod test {
     #[allow(clippy::semicolon_if_nothing_returned)] // False positive
     async fn test_db() {
         let options = Options {
-            database: Url::parse("postgres://api:api@localhost/api").unwrap(),
+            database: Url::parse("postgres://postgres:postgres@localhost/diva-api").unwrap(),
         };
         let chain_id = U256::one();
         let db = Database::connect(options, chain_id).await.unwrap();

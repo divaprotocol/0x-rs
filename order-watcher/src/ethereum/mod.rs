@@ -10,6 +10,10 @@ use structopt::StructOpt;
 use tracing::info;
 use url::Url;
 use web3::{contract::Contract, transports::Http, types::Address, Web3};
+use web3::types::{U256};
+use dotenv::dotenv;
+use std::env;
+use konst::{primitive::parse_usize, result::unwrap_ctx};
 
 use self::{
     abi_coding::{Input, Output},
@@ -23,12 +27,12 @@ const EXCHANGE_ABI: &[u8] = include_bytes!("../../ethereum-abis/exchange.json");
 
 #[derive(Debug, PartialEq, StructOpt)]
 pub struct Options {
-    /// Ethereum connection string.
+    // Ethereum connection string.
     #[structopt(
         short,
         long,
         env = "ETHEREUM",
-        default_value = "https://eth-ropsten.alchemyapi.io/v2/3WuVrKsjfC6dk-8SQybWvN51ta6MKvO4"
+        default_value = "https://mainnet.infura.io/v3/"
     )]
     pub ethereum: Url,
 
@@ -72,20 +76,66 @@ pub struct Ethereum {
 impl Ethereum {
     #[allow(clippy::similar_names)] // Watcher and Batcher are similar
     pub async fn connect(options: Options) -> AnyResult<Self> {
-        info!("Connecting to Ethereum at {}", options.ethereum);
-        let transport = Http::new(options.ethereum.as_str())?;
+        dotenv().ok();
+        // Verify chain id
+        let chain_id = env::var("CHAIN_ID").unwrap();
+
+        let mainnet_rpc_url = env::var("HTTPS_MAINNET_RPC_URL").unwrap();
+        let goerli_rpc_url = env::var("HTTPS_GOERLI_RPC_URL").unwrap();
+        let polygon_rpc_url = env::var("HTTPS_POLYGON_RPC_URL").unwrap();
+        let mumbai_rpc_url = env::var("HTTPS_MUMBAI_RPC_URL").unwrap();
+
+        let mut rpc_url = options.ethereum;
+
+        if chain_id == "5" {
+            rpc_url = goerli_rpc_url.parse().unwrap();
+        } else if chain_id == "137" {
+            rpc_url = polygon_rpc_url.parse().unwrap();
+        } else if chain_id == "80001" {
+            rpc_url = mumbai_rpc_url.parse().unwrap();
+        } else {
+            rpc_url = mainnet_rpc_url.parse().unwrap();
+        }
+
+        info!("Connecting to Ethereum at {}", rpc_url);
+
+        let transport = Http::new(rpc_url.as_str())?;
         let web3 = Web3::new(transport);
 
         // Verify chain id
-        let chain_id = web3.eth().chain_id().await?;
-        let chain = ChainInfo {
-            chain_id,
+        // let chain_id = web3.eth().chain_id().await?;
+        let mut chain = ChainInfo {
+            chain_id: U256::from(unwrap_ctx!(parse_usize(&chain_id))),
             exchange: options.exchange,
             flash_wallet: options.flash_wallet,
             block_timeout: BLOCK_TIMEOUT,
             request_timeout: REQUEST_TIMEOUT,
             max_reorg: options.max_reorg,
         };
+
+        if chain_id == "5" {
+            chain.exchange = "0xf91bb752490473b8342a3e964e855b9f9a2a668e"
+                .parse()
+                .unwrap();
+            chain.flash_wallet = "0xf15469c80a1965f5f90be5651fcb6c6f3392b2a1"
+                .parse()
+                .unwrap();
+        } else if chain_id == "137" {
+            chain.exchange = "0xdef1c0ded9bec7f1a1670819833240f027b25eff"
+                .parse()
+                .unwrap();
+            chain.flash_wallet = "0xdB6f1920A889355780aF7570773609Bd8Cb1f498"
+                .parse()
+                .unwrap();
+        } else if chain_id == "80001" {
+            chain.exchange = "0xf471d32cb40837bf24529fcf17418fc1a4807626"
+                .parse()
+                .unwrap();
+            chain.flash_wallet = "0x64254Cf2F3AbD765BeE46f8445B76e2bB0aF5A2c"
+                .parse()
+                .unwrap();
+        }
+
         info!("Connected to Ethereum with chain id {}", chain.chain_id);
 
         // Wrap contracts

@@ -72,10 +72,10 @@ ENV LOG_FORMAT="json"
 ENV LOG_FILTER="info"
 
 # Expose Prometheus
-ENV PROMETHEUS="http://0.0.0.0:9998/metrics"
-EXPOSE 9998/tcp
+ENV PROMETHEUS="http://0.0.0.0:9999/metrics"
+EXPOSE 9999/tcp
 LABEL prometheus.io/scrape="true"
-LABEL prometheus.io/port="9998"
+LABEL prometheus.io/port="9999"
 LABEL prometheus.io/path="/metrics"
 
 # Executable

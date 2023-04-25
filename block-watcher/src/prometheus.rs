@@ -23,7 +23,7 @@ pub struct Options {
     #[structopt(
         long,
         env = "PROMETHEUS",
-        default_value = "http://127.0.0.1:9998/metrics"
+        default_value = "http://127.0.0.1:9999/metrics"
     )]
     pub prometheus: Url,
 }
@@ -118,7 +118,7 @@ pub async fn main(options: Options) -> AnyResult<()> {
         Some(_) => return Err(anyhow!("Cannot bind {}", options.prometheus)),
         None => Ipv4Addr::LOCALHOST.into(),
     };
-    let port = options.prometheus.port().unwrap_or(9998);
+    let port = options.prometheus.port().unwrap_or(9999);
     let addr = SocketAddr::new(ip, port);
 
     let server = Server::bind(&addr).serve(make_service_fn(|_| {
