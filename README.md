@@ -25,3 +25,16 @@
     ```
     sudo apt install pkg-config -y && sudo apt install libssl-dev -y && sudo apt install cmake -y && sudo apt install libpq-dev -y
     ```
+4. Running services
+    - Copy the `.env` file
+    ```
+    cp .env.example .env
+    ```
+    - Block watcher service
+    ```
+    cd block-watcher && cargo run
+    ```
+    - Order watcher
+    ```
+    cd order-watcher && cargo run
+    ```
