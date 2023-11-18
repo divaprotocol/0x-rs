@@ -32,6 +32,8 @@ use crate::{
     utils::{Any as _, AnyFlatten as _},
     SignedOrderWithMetadata,
 };
+use dotenv::dotenv;
+use std::env;
 
 static OPS_COUNTER: Lazy<IntCounterVec> = Lazy::new(|| {
     register_int_counter_vec!("db_operations", "Database operations by kind.", &["kind"]).unwrap()
@@ -59,7 +61,7 @@ pub struct Options {
         short,
         long,
         env = "DATABASE",
-        default_value = "postgres://postgres:postgres@localhost/diva-api"
+        default_value = "postgres://postgres:postgres@localhost/diva_api"
     )]
     pub database: Url,
 }
@@ -79,10 +81,11 @@ impl Debug for Database {
 
 impl Database {
     pub async fn connect(options: Options, chain_id: U256) -> AnyResult<Self> {
-        info!("Connecting to PostgreSQL at {}", &options.database);
+        dotenv().ok();
+        let database = env::var("DATABASE").unwrap();
+        info!("Connecting to PostgreSQL at {}", database);
         let connection = spawn_blocking({
-            let url = options.database.clone();
-            move || PgConnection::establish(url.as_str())
+            move || PgConnection::establish(database.as_str())
         })
         .await
         .any_flatten()
